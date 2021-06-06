@@ -1,0 +1,30 @@
+version: '3'
+
+# Define services
+services:
+
+  # App Service
+  client-api:
+    build:
+      context: ./client-api
+      dockerfile: ../docker/Dockerfile
+    restart: on-failure
+    command: ./main portreader
+    volumes:
+      - ./client-api/json/ports.json:/app/ports.json
+    links:
+      - port-domain
+    depends_on:
+      - port-domain # This service depends on redis. Start that first.
+    environment: # Pass environment variables to the service
+      GRPC_PORT: "port-domain:50051"
+      PATH_JSON: /app/ports.json
+
+  port-domain:
+    build:
+      context: ./port-domain
+      dockerfile: ../docker/Dockerfile
+    restart: on-failure
+    command: ./main grpcserver
+    environment: # Pass environment variables to the service
+      GRPC_PORT: 50051

@@ -1,0 +1,23 @@
+version: '3'
+
+# Define services
+services:
+
+  # App Service
+  client-api-test:
+    build:
+      context: ./client-api
+      dockerfile: ../docker/Dockerfile-test
+    restart: on-failure
+    command: go test -v -cover ./...
+    volumes:
+      - ./client-api:/app
+
+  port-domain-test:
+    build:
+      context: ./port-domain
+      dockerfile: ../docker/Dockerfile-test
+    restart: on-failure
+    command: go test -v -cover ./...
+    volumes:
+      - ./port-domain:/app
