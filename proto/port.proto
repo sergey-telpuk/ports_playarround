@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package port;
+
+option go_package = "port/";
+
+service PortDomainService {
+  rpc SendPort(PortDto) returns (Response) {}
+  rpc GetPortByName(Name) returns (PortDto) {}
+}
+message Name {
+  string name = 1;
+}
+
+message PortDto {
+  string key = 1;
+  string name = 2;
+  string city = 3;
+  string country = 4;
+  repeated string alias = 5;
+  repeated string regions = 6;
+  repeated float coordinates = 7;
+  string province = 8;
+  string timezone = 9;
+  repeated string unlocs = 10;
+  string code = 11;
+}
+
+message Response {
+  int32 status = 1;
+  string errorMessage = 2;
+}
